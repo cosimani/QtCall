@@ -7,8 +7,13 @@
 #include <QCameraInfo>
 #include <QList>
 #include <QMediaRecorder>
+#include <QDir>
 
 
+/**
+ * @brief The Grabador class Permite grabar de a una cosa por vez. Es decir, si se desean grabar varias cosas, se debera
+ * crear un objeto de esta clase para cada cosa que se quiera grabar.
+ */
 class Grabador : public QObject
 {
     Q_OBJECT
@@ -16,12 +21,27 @@ public:
     explicit Grabador( QObject * parent = nullptr );
     virtual ~Grabador();
 
+    enum QueGraba { NADA, CAMARA, PANTALLA, PARLANTES, MICROFONO };
 
-    void encenderCamara( int numeroDeCamara = 0 );
+    void queGrabar( QueGraba queGraba, QStringList parametrosConfiguracion );
+
+    void detenerGrabacion();
+//    bool iniciarGrabacion();
+
 
 private:
     QCamera * camera;
     QMediaRecorder * recorder;
+    QueGraba queGraba;
+
+    /**
+     * @brief parametrosConfiguracion Se usara para almacenar la configuracion de lo que se graba. Por ejemplo>
+     * Si se graba CAMARA :     parametrosConfiguracion = nroCamara
+     * Si se graba PARLANTES :  parametrosConfiguracion =
+     * Si se graba MICROFONO :  parametrosConfiguracion =
+     * Si se graba PANTALLA :   parametrosConfiguracion =
+     */
+    QStringList parametrosConfiguracion;
 
 
 private slots:

@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     // Iniciamos y conectamos la DB
     Database::getInstance()->connect();
 
-    qDebug() << Config::getInstance()->getString( "puerto" );
+    qDebug() << Config::getInstance()->getString( "puerto_tcp" );
     qDebug() << Config::getInstance()->getString( "servicio_upload" );
 
 

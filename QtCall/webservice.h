@@ -36,7 +36,7 @@ private slots:
 
 signals:
     void signal_solicitudRecibida( QByteArray );
-    void signal_queryItems( QUrlQuery );
+    void signal_queryItems( QString, QUrlQuery );
 };
 
 #endif //ECHOSERVER_H

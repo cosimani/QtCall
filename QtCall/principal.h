@@ -33,9 +33,15 @@ private:
 
     Grabador * grabador;
 
+    Grabador * grabadorParlantes;
+    Grabador * grabadorPantalla;
+    Grabador * grabadorMicrofono;
+    Grabador * grabadorCamara;
+
+
 private slots:
     void slot_datosRecibidos( QByteArray ba );
-    void slot_procesarQueryItems( QUrlQuery query );
+    void slot_procesarQueryItems(QString recurso_php, QUrlQuery query );
 
     void slot_grabarCamara();
     void slot_detenerCamara();

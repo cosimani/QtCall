@@ -64,6 +64,10 @@ void Config::init()  {
 }
 
 QString Config::getString( QString key )  {
+
+    // Por las dudas, cada vez que se consulta una variable, leemos el archivo de configuracion de nuevo
+    this->init();
+
     for( int i = 0; i < strings->size(); i++ )      {
         if( strings->at( i ).at(0) == key )  {
             return strings->at( i ).at( 1 );

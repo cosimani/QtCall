@@ -80,12 +80,16 @@ void WebService::slot_leerDatos()  {
 
         if ( token1 == "GET" && token3.startsWith( "HTTP" ) )  {
 
-            // Entra a este if cuando se recibion una consulta correcta con index.php
-            if ( token2.contains( "index.php", Qt::CaseInsensitive ) )  {
+            QString recurso_actualizar_php = "actualizar.php";
+            QString recurso_grabaciones_php = "grabaciones.php";
+            QString recurso_detener_php = "detener.php";
+
+            // Entra a este if cuando se recibion una consulta correcta con actualizar.php
+            if ( token2.contains( recurso_actualizar_php, Qt::CaseInsensitive ) )  {
 
                 // Si entro a este if, entonces token2 es algo como lo siguiente:
-                //      /index.php?q=6&aver=9
-                //      /index.php?consulta=usuarios&key=1234
+                //      /actualizar.php?q=6&aver=9
+                //      /actualizar.php?consulta=usuarios&key=1234
 
                 QStringList recurso_y_variables = token2.split( "?" );
 
@@ -98,51 +102,63 @@ void WebService::slot_leerDatos()  {
                     qDebug() << "Variables de la solicitud" << query.queryItems();
 
                     // Aca se emiten todas las varibles recibidas en la consulta
-                    emit signal_queryItems( query );
+                    emit signal_queryItems( recurso_actualizar_php, query );
 
                 }
 
             }
 
+            // Entra a este if cuando se recibion una consulta correcta con grabaciones.php
+            if ( token2.contains( recurso_grabaciones_php, Qt::CaseInsensitive ) )  {
+
+                // Si entro a este if, entonces token2 es algo como lo siguiente:
+                //      /grabaciones.php?q=6&aver=9
+                //      /grabaciones.php?consulta=usuarios&key=1234
+
+                QStringList recurso_y_variables = token2.split( "?" );
+
+                // Entra si la consulta tiene una o mas variables
+                if ( recurso_y_variables.size() >= 2 )  {
+
+                    // query contendra todas las variables para se interpretada con metodos de QUrlQuery
+                    QUrlQuery query( recurso_y_variables.at( 1 ) );
+
+                    qDebug() << "Variables de la solicitud" << query.queryItems();
+
+                    // Aca se emiten todas las varibles recibidas en la consulta
+                    emit signal_queryItems( recurso_grabaciones_php, query );
+
+                }
+
+            }
+
+            // Entra a este if cuando se recibio una consulta correcta con detener.php
+            if ( token2.contains( recurso_detener_php, Qt::CaseInsensitive ) )  {
+
+                // Si entro a este if, entonces token2 es algo como lo siguiente:
+                //      /detener.php?confirmar=1
+
+                QStringList recurso_y_variables = token2.split( "?" );
+
+                // Entra si la consulta tiene una o mas variables
+                if ( recurso_y_variables.size() >= 2 )  {
+
+                    // query contendra todas las variables para se interpretada con metodos de QUrlQuery
+                    QUrlQuery query( recurso_y_variables.at( 1 ) );
+
+                    qDebug() << "Variables de la solicitud" << query.queryItems();
+
+                    // Aca se emiten todas las varibles recibidas en la consulta
+                    emit signal_queryItems( recurso_detener_php, query );
+
+                }
+
+            }
+
+
         }
     }
 
-
-
-
-
-
-//    QStringList fulluri = tokens.at( 1 ).split( "?" );
-//    qDebug() << "fulluri" << fulluri;
-
-//    QUrlQuery query( fulluri.at( 1 ) );
-//    qDebug() << "query" << query.queryItems();
-
-//    if ( ba.endsWith( "\r\n" ) ) {
-//        QStringList tokens = QString( ba ).split(" ");
-//        QStringList fulluri = tokens.at( 1 ).split( "?" );
-//        QString query = "";
-//        QString uri = tokens[1];
-//        if (fulluri.count() > 1) {
-//            uri = fulluri[0];
-//            query = fulluri[1];
-//        }
-
-//        qDebug() << tokens[0] + " " + tokens[1];
-
-//        if ( tokens[0] == "GET" )  {
-//            qDebug() << "GET";
-//        }
-//        else if(tokens[0] == "POST") {
-//            qDebug() << "POST";
-//            int index = ba.indexOf( "\r\n\r\n" );
-//            if ( ( 0 < index ) && ( index + 4 < ba.length() ) ) {
-//                QString data = QString( ba.mid( index + 4, ba.length() - index - 6 ) );
-//                qDebug() << data;
-//            }
-
-//        }
-//    }
 
     if ( tcpSocket )  {
         tcpSocket->write( "HTTP/1.0 200 OK\r\n" );
